@@ -136,3 +136,49 @@
 .auth-card input::placeholder {
 	color: #888; /* placeholder */
 }
+
+.form-area {
+	transition: all 0.4s ease;
+}
+
+.auth-card.login {
+	animation: slideInLeft 0.4s ease;
+}
+
+.auth-card.register {
+	animation: slideInRight 0.4s ease;
+}
+
+@keyframes slideInLeft {
+	from {
+		opacity: 0;
+		transform: translateX(-20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideInRight {
+	from {
+		opacity: 0;
+		transform: translateX(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+.error {
+	border-color: #ff4d4f !important;
+	background: #fff5f5;
+}
+
+.error-text {
+	color: #ff4d4f;
+	font-size: 12px;
+	margin: -6px 0 8px 4px;
+	display: block;
+}

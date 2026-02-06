@@ -3,51 +3,101 @@ import "./Auth.css";
 
 const Auth = () => {
 	const [isLogin, setIsLogin] = useState(true);
-	const [showPassword, setShowPassword] = useState(false);
+	const [form, setForm] = useState({
+		name: "",
+		email: "",
+		password: "",
+	});
+	const [errors, setErrors] = useState({});
+
+	const handleChange = (e) => {
+		setForm({ ...form, [e.target.name]: e.target.value });
+		setErrors({ ...errors, [e.target.name]: "" });
+	};
+
+	const validate = () => {
+		const newErrors = {};
+
+		if (!isLogin && !form.name.trim()) {
+			newErrors.name = "Please enter your name";
+		}
+
+		if (!form.email.includes("@")) {
+			newErrors.email = "Enter a valid email address";
+		}
+
+		if (form.password.length < 6) {
+			newErrors.password = "Password must be at least 6 characters";
+		}
+
+		setErrors(newErrors);
+		return Object.keys(newErrors).length === 0;
+	};
+
+	const handleSubmit = () => {
+		if (!validate()) return;
+
+		alert(isLogin ? "Login successful 🎉" : "Account created 🚀");
+	};
 
 	return (
 		<div className="auth-container">
-			<div className="auth-card">
-				<h2>
-					{isLogin ? "Welcome back 👋" : "Let’s get you started 🚀"}
-				</h2>
+			<div className={`auth-card ${isLogin ? "login" : "register"}`}>
+				<h2>{isLogin ? "Welcome back 👋" : "Create account 🚀"}</h2>
 				<p className="subtitle">
 					{isLogin
-						? "Glad to see you again. Please login."
-						: "Create your account in just a minute."}
+						? "Glad to see you again"
+						: "Join us in just a minute"}
 				</p>
 
-				{!isLogin && <input type="text" placeholder="Full name" />}
-
-				<input type="email" placeholder="Email address" />
-
-				<div className="password-box">
-					<input
-						type={showPassword ? "text" : "password"}
-						placeholder="Password"
-					/>
-					<span onClick={() => setShowPassword(!showPassword)}>
-						{showPassword ? "🙈" : "👁️"}
-					</span>
-				</div>
-
-				{isLogin && (
-					<div className="extra-row">
-						<label>
-							<input type="checkbox" /> Remember me
-						</label>
-						<span className="forgot">Forgot?</span>
-					</div>
+				{!isLogin && (
+					<>
+						<input
+							className={errors.name ? "error" : ""}
+							type="text"
+							name="name"
+							placeholder="Full name"
+							value={form.name}
+							onChange={handleChange}
+						/>
+						{errors.name && (
+							<span className="error-text">{errors.name}</span>
+						)}
+					</>
 				)}
 
-				<button className="auth-btn">
-					{isLogin ? "Login" : "Create Account"}
+				<input
+					className={errors.email ? "error" : ""}
+					type="email"
+					name="email"
+					placeholder="Email address"
+					value={form.email}
+					onChange={handleChange}
+				/>
+				{errors.email && (
+					<span className="error-text">{errors.email}</span>
+				)}
+
+				<input
+					className={errors.password ? "error" : ""}
+					type="password"
+					name="password"
+					placeholder="Password"
+					value={form.password}
+					onChange={handleChange}
+				/>
+				{errors.password && (
+					<span className="error-text">{errors.password}</span>
+				)}
+
+				<button className="auth-btn" onClick={handleSubmit}>
+					{isLogin ? "Login" : "Register"}
 				</button>
 
 				<p className="toggle-text">
 					{isLogin ? "New here?" : "Already have an account?"}
 					<span onClick={() => setIsLogin(!isLogin)}>
-						{isLogin ? " Create an account" : " Login instead"}
+						{isLogin ? " Create account" : " Login"}
 					</span>
 				</p>
 			</div>
